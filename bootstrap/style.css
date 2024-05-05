@@ -108,4 +108,20 @@ h2 {
 #about {
     background-color: #1abc9c;
 }
+#about .about-text {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: left;
+}
+.download-button {
+    padding: 15px 30px 15px;
+}
+.download-icon {
+    padding-right: 10px;
+}
 /*about*/
+/*modal*/
+.image-modal {
+    width: 100%;
+}
+/*modal*/
