@@ -38,7 +38,21 @@ class LibroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request);
+        //validazione da fare
+        $libro = new Libro;
+        $libro->titolo = $request->titolo;
+        $libro->autore_id = $request->autore_id;
+        $libro->editore_id = $request->editore_id;
+        $libro->prezzo = $request->prezzo;
+        $libro->anno = $request->anno;
+        $libro->isbn = $request->isbn;
+        $libro->lingua = $request->lingua;
+
+        //adesso questa nuova istanza libro può essere salvata
+
+        $libro->save();
+        return redirect()->route('admin.libri.index');
     }
 
     /**

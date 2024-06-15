@@ -5,8 +5,8 @@
 @section ('content')
 <div class="container">
     <h1>Inserimento libro</h1>
-    <form action="" method="post">
-        @csrf
+    <form action="{{route('admin.libri.store')}}" method="post">
+         @csrf  {{-- genera un token di sicurezza --}}
         <div class="mb-3">
           <label for="titolo" class="form-label">Titolo</label>
           <input type="text" class="form-control" id="titolo" name=titolo required>
