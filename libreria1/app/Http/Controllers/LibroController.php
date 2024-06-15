@@ -29,7 +29,8 @@ class LibroController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.libri.create');
+
     }
 
     /**

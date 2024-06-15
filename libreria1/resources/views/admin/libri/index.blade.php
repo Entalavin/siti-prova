@@ -4,34 +4,35 @@
 
 @section ('content')
 <h1>Lista dei libri</h1>
-<a href="">Inserisci un nuovo libro</a>
+<a href="{{route('admin.libri.create')}}">Inserisci un nuovo libro</a>
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">id</th>
+        <th scope="col">Titolo</th>
+        <th scope="col">Autore</th>
+        <th scope="col">Editore</th>
+        <th scope="col">Prezzo</th>
+        <th scope="col">Operazioni</th>
       </tr>
     </thead>
     <tbody>
+      {{-- ciclo foreach per vedere tutti i libri --}}
+      @foreach($libri as $libro)
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <th scope="row">{{$libro->id}}</th>
+        <td>{{$libro->titolo}}</td>
+        <td>{{$libro->autore_id}}</td>
+        <td>{{$libro->editore_id}}</td>
+        <td>{{$libro->prezzo}}</td>
+        <td>
+          <a href="">Modifica</a>
+          <form action="">
+            <input type="submit" value="Cancella">
+          </form>
+        </td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+      @endforeach
     </tbody>
   </table>
 

@@ -30,3 +30,7 @@ Route::get('/libri/{libro}', [LibroController::class, 'show'])->name('libri.show
 // admin
 
 Route::get('/admin/lista-libri', [LibroController::class, 'index_admin'])->name('admin.libri.index');
+
+Route::get('/admin/create-libro', [LibroController::class, 'create'])->name('admin.libri.create');
+
+Route::post('/admin/libri', [LibroController::class, 'store'])->name('admin.libri.store');
