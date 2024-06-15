@@ -26,3 +26,7 @@ Route::get('/libri', [LibroController::class, 'index'])  //ha un controller
 ->name('libri.index');
 
 Route::get('/libri/{libro}', [LibroController::class, 'show'])->name('libri.show');
+
+// admin
+
+Route::get('/admin/lista-libri', [LibroController::class, 'index_admin'])->name('admin.libri.index');

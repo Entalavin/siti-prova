@@ -16,6 +16,14 @@ class LibroController extends Controller
         return view('libri.index', compact('libri'));
     }
 
+    public function index_admin()
+    {
+        $libri = Libro::all();
+        return view('admin.libri.index', compact('libri'));
+    }
+
+    
+
     /**
      * Show the form for creating a new resource.
      */
