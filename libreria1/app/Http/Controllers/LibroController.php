@@ -38,8 +38,18 @@ class LibroController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
-        //validazione da fare
+        //dd($request); //da fare, praticamente fa il vardump e poi muore
+        //validazione da fare, checking that data is valid before attempting to use it
+        $request->validate([
+            'titolo'=>'required|string|min:2|max:255',
+            'autore_id'=>'required',
+            'editore_id'=>'required',
+            'prezzo'=>'required|numeric',
+            'anno'=>'required|integer|min:1900|max:'.date('Y'),
+            'isbn'=>'required|string|max:20',
+            'lingua'=>'required|string|max:2',
+        ]);
+        //se i campi inseriti non rispettano queste regole non verrà inserito nessun libro, inserire anche la visualizzazione dell'errore nella pagina create
         $libro = new Libro;
         $libro->titolo = $request->titolo;
         $libro->autore_id = $request->autore_id;
@@ -67,9 +77,10 @@ class LibroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id) //devo dargli il libro da modificare che viene preso dalla index
     {
-        //
+        $libro = Libro::findOrFail($id);
+        return view('admin.libri.edit', compact('libro')); 
     }
 
     /**
@@ -77,7 +88,21 @@ class LibroController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'titolo'=>'required|string|min:2|max:255',
+            'autore_id'=>'required',
+            'editore_id'=>'required',
+            'prezzo'=>'required|numeric',
+            'anno'=>'required|integer|min:1900|max:'.date('Y'),
+            'isbn'=>'required|string|max:20',
+            'lingua'=>'required|string|max:2',
+        ]);
+        $libro = Libro::findOrFail($id);
+        $libro->update($request->all());
+        
+        return redirect()->route('admin.libri.index');
+
+
     }
 
     /**

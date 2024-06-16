@@ -26,7 +26,7 @@
         <td>{{$libro->editore_id}}</td>
         <td>{{$libro->prezzo}}</td>
         <td>
-          <a href="">Modifica</a>
+          <a href="{{route('admin.libri.edit', $libro->id)}}">Modifica</a>
           <form action="">
             <input type="submit" value="Cancella">
           </form>

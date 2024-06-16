@@ -34,3 +34,7 @@ Route::get('/admin/lista-libri', [LibroController::class, 'index_admin'])->name(
 Route::get('/admin/create-libro', [LibroController::class, 'create'])->name('admin.libri.create');
 
 Route::post('/admin/libri', [LibroController::class, 'store'])->name('admin.libri.store'); // invia il form
+
+Route::get('/admin/modifica-libro/{libro}', [LibroController::class, 'edit'])->name('admin.libri.edit');
+
+Route::put('/admin/libri/{libro}', [LibroController::class, 'update'])->name('admin.libri.update');
