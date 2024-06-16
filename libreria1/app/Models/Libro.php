@@ -19,4 +19,15 @@ class Libro extends Model
         'lingua'
     ];
     public $timestamps = false; //si creano solitamente delle colonne in cui si inserisce quando è stato inserito o modificato un record, siccome noi non ce le abbiamo lo mettiamo falso così non le cerca. 
+    public function autore(){
+        return $this->belongsTo(Autore::class);
+    }
+
+    public function editore(){
+        return $this->belongsTo(Editore::class);
+    }
+
+    public function category() { //l'ho chiamato category per distinguerlo da categoria che uso nell'index ($libro->category as $categoria)
+        return $this->belongsToMany(Categoria::class, 'libri_categorie');
+    }
 }

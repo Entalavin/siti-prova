@@ -22,8 +22,8 @@
       <tr>
         <th scope="row">{{$libro->id}}</th>
         <td>{{$libro->titolo}}</td>
-        <td>{{$libro->autore_id}}</td>
-        <td>{{$libro->editore_id}}</td>
+        <td>{{$libro->autore->nome}} {{$libro->autore->cognome}}</td>
+        <td>{{$libro->editore->denominazione}}</td>
         <td>{{$libro->prezzo}}</td>
         <td>
           <a href="{{route('admin.libri.edit', $libro->id)}}">Modifica</a>

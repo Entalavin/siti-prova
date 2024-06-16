@@ -2,7 +2,8 @@
 {{-- gli diciamo quale layout prendere, vai dentro la cartella layout e scegli il file admin --}}
 @section('title', 'crea libri')
 
-@section ('content')
+@section ('content') 
+{{-- @dd($categorie) --}}
 <div class="container">
     <h1>Inserimento libro</h1>
     <form action="{{route('admin.libri.store')}}" method="post">
@@ -16,17 +17,33 @@
         </div>
         <div class="mb-3">
             <label for="autore_id" class="form-label">Autore</label>
-            <input type="text" class="form-control" id="autore_id" name="autore_id" required>
+            {{-- la select serve per selezionare gli autori --}}
+            <select class="form-control" id="autore_id" name="autore_id" required>
+                @foreach($autori as $autore)
+                <option value="{{$autore->id}}">{{$autore->nome}} {{$autore->cognome}} </option>
+                @endforeach
+            </select>
             @error('autore_id')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <div class="mb-3">
             <label for="editore_id" class="form-label">Editore</label>
-            <input type="text" class="form-control" id="editore_id" name="editore_id" required>
+            <select class="form-control" id="editore_id" name="editore_id" required>
+                @foreach($editori as $editore)
+                <option value="{{$editore->id}}">{{$editore->denominazione}}</option>
+                @endforeach
+            </select>
             @error('editore_id')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
+        </div>
+        <div class="mb-3">
+            <label for="category[]" class="form-label">Categorie</label><br>
+            @foreach($categorie as $categoria)
+            <input type="checkbox" id="categoria_{{$categoria->id}}" name="category[]" value="{{$categoria->id}}">
+            <label for="categoria_{{$categoria->id}}"> {{ $categoria->nome }} </label>
+            @endforeach
         </div>
         <div class="mb-3">
             <label for="isbn" class="form-label">ISBN</label>
