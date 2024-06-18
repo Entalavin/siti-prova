@@ -14,6 +14,21 @@ class LibroController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private function validateData(Request $request) //funzione privata alla quale passo l'oggetto request, l'ho messa fuori la validazione perché mi serve uguale in più punti.
+    {
+        return $request->validate([
+            'titolo'=>'required|string|min:2|max:255',
+            'autore_id'=>'required',
+            'editore_id'=>'required',
+            'prezzo'=>'required|numeric',
+            'anno'=>'required|integer|min:1900|max:'.date('Y'),
+            'isbn'=>'required|string|max:20',
+            'lingua'=>'required|string|max:2',
+            'category' =>'required|array',
+            'category.*' =>'exists:categorie,id',
+        ]);
+    }
+
     public function index()
     {
         $libri = Libro::all();
@@ -26,7 +41,8 @@ class LibroController extends Controller
 
     public function index_admin()
     {
-        $libri = Libro::all();
+        // $libri = Libro::all();
+        $libri = Libro::paginate(6);
         $autori = Autore::all();
         $editori = Editore::all();
         return view('admin.libri.index', compact('libri','autori', 'editori'));
@@ -51,29 +67,30 @@ class LibroController extends Controller
      */
     public function store(Request $request) //$request sono i dati che vengono dal form
     {
-        //dd($request); //da fare, praticamente fa il vardump e poi muore
+        //dd($request); //da fare, praticamente fa il vardump e poi muore, vede se arrivano tutti i campi
         //validazione da fare, checking that data is valid before attempting to use it
         //dd($request->category); //vediamo se arrivano le categorie, l'array l'ho chiamato category[], questi dati che arrivano li attach
-        $request->validate([
-            'titolo'=>'required|string|min:2|max:255',
-            'autore_id'=>'required',
-            'editore_id'=>'required',
-            'prezzo'=>'required|numeric',
-            'anno'=>'required|integer|min:1900|max:'.date('Y'),
-            'isbn'=>'required|string|max:20',
-            'lingua'=>'required|string|max:2',
-        ]);
+        // $request->validate([
+        //     'titolo'=>'required|string|min:2|max:255',
+        //     'autore_id'=>'required',
+        //     'editore_id'=>'required',
+        //     'prezzo'=>'required|numeric',
+        //     'anno'=>'required|integer|min:1900|max:'.date('Y'),
+        //     'isbn'=>'required|string|max:20',
+        //     'lingua'=>'required|string|max:2',
+        // ]);
+        $validatedData = $this->validateData($request);
         //se i campi inseriti non rispettano queste regole non verrà inserito nessun libro, inserire anche la visualizzazione dell'errore nella pagina create
         // Creazione di un nuovo libro con i dati validati
         $libro = new Libro;
-        $libro->titolo = $request->titolo;
-        $libro->autore_id = $request->autore_id;
-        $libro->editore_id = $request->editore_id;
-        $libro->prezzo = $request->prezzo;
-        $libro->anno = $request->anno;
-        $libro->isbn = $request->isbn;
-        $libro->lingua = $request->lingua;
-
+        // $libro->titolo = $request->titolo;
+        // $libro->autore_id = $request->autore_id;
+        // $libro->editore_id = $request->editore_id;
+        // $libro->prezzo = $request->prezzo;
+        // $libro->anno = $request->anno;
+        // $libro->isbn = $request->isbn;
+        // $libro->lingua = $request->lingua;
+        $libro->fill($validatedData);
         //adesso questa nuova istanza libro può essere salvata
         $libro->save();
         $libro->category()->attach($request->category); //DA FARE PER FORZA DOPO SAVE. metodo attach legato alla funzione in questo caso category() su Libro. quindi questa funzione prende il libro che ha appena salvato sopra e attacca nella tabella ponte la relativa categoria del libro che si è già creato. il secondo category è il nome che ho dato nel form name="category[]"
@@ -95,7 +112,10 @@ class LibroController extends Controller
     public function edit(string $id) //devo dargli il libro da modificare che viene preso dalla index
     {
         $libro = Libro::findOrFail($id);
-        return view('admin.libri.edit', compact('libro')); 
+        $autori = Autore::all();
+        $editori = Editore::all();
+        $categorie = Categoria::all();
+        return view('admin.libri.edit', compact('libro', 'autori', 'editori', 'categorie')); 
     }
 
     /**
@@ -103,17 +123,23 @@ class LibroController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'titolo'=>'required|string|min:2|max:255',
-            'autore_id'=>'required',
-            'editore_id'=>'required',
-            'prezzo'=>'required|numeric',
-            'anno'=>'required|integer|min:1900|max:'.date('Y'),
-            'isbn'=>'required|string|max:20',
-            'lingua'=>'required|string|max:2',
-        ]);
+        // $request->validate([
+        //     'titolo'=>'required|string|min:2|max:255',
+        //     'autore_id'=>'required',
+        //     'editore_id'=>'required',
+        //     'prezzo'=>'required|numeric',
+        //     'anno'=>'required|integer|min:1900|max:'.date('Y'),
+        //     'isbn'=>'required|string|max:20',
+        //     'lingua'=>'required|string|max:2',
+        // ]);
+        $validatedData = $this->validateData($request);
+        
         $libro = Libro::findOrFail($id);
-        $libro->update($request->all());
+        // $libro->update($request->all());
+        $libro->update($validatedData);
+
+        // Aggiornamento delle categorie
+        $libro->category()->sync($request->category); 
         
         return redirect()->route('admin.libri.index');
 
@@ -125,6 +151,9 @@ class LibroController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $libro = Libro::findOrFail($id);
+        $libro->delete();
+
+        return redirect()->route('admin.libri.index');
     }
 }

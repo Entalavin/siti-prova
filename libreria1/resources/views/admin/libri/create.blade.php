@@ -20,7 +20,7 @@
             {{-- la select serve per selezionare gli autori --}}
             <select class="form-control" id="autore_id" name="autore_id" required>
                 @foreach($autori as $autore)
-                <option value="{{$autore->id}}">{{$autore->nome}} {{$autore->cognome}} </option>
+                    <option value="{{$autore->id}}">{{$autore->nome}} {{$autore->cognome}} </option>
                 @endforeach
             </select>
             @error('autore_id')
@@ -31,7 +31,7 @@
             <label for="editore_id" class="form-label">Editore</label>
             <select class="form-control" id="editore_id" name="editore_id" required>
                 @foreach($editori as $editore)
-                <option value="{{$editore->id}}">{{$editore->denominazione}}</option>
+                    <option value="{{$editore->id}}">{{$editore->denominazione}}</option>
                 @endforeach
             </select>
             @error('editore_id')
@@ -41,8 +41,8 @@
         <div class="mb-3">
             <label for="category[]" class="form-label">Categorie</label><br>
             @foreach($categorie as $categoria)
-            <input type="checkbox" id="categoria_{{$categoria->id}}" name="category[]" value="{{$categoria->id}}">
-            <label for="categoria_{{$categoria->id}}"> {{ $categoria->nome }} </label>
+                <input type="checkbox" id="categoria_{{$categoria->id}}" name="category[]" value="{{$categoria->id}}">
+                <label for="categoria_{{$categoria->id}}"> {{ $categoria->nome }} </label>
             @endforeach
         </div>
         <div class="mb-3">

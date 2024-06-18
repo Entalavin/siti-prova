@@ -25,7 +25,7 @@
                   </h6>
                   @endif
                   <p class="card-text">Prezzo: {{$libro->prezzo}} euro</p>
-                  <a href="{{route('libri.show', $libro->id)}}" class="card-link">Mostra dettagli</a>
+                   <a href="{{route('libri.show', $libro->id)}}" class="card-link">Mostra dettagli</a> {{--questo $libro->id rispecchia {libro} sulla route libri.show --}}
                 </div>
               </div>
               

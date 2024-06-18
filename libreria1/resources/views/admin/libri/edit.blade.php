@@ -18,14 +18,24 @@
         </div>
         <div class="mb-3">
             <label for="autore_id" class="form-label">Autore</label>
-            <input type="text" class="form-control" id="autore_id" name=autore_id value="{{$libro->autore_id}}" required>
+            <select class="form-control" id="autore_id" name="autore_id" required>
+                @foreach($autori as $autore)
+                    <option value="{{$autore->id}}" {{$libro->autore_id == $autore->id ? 'selected' : ''}} >{{$autore->nome}} {{$autore->cognome}} </option>
+                @endforeach
+            </select>
+            {{-- <input type="text" class="form-control" id="autore_id" name=autore_id value="{{$libro->autore_id}}" required> --}}
             @error('autore_id')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <div class="mb-3">
             <label for="editore_id" class="form-label">Editore</label>
-            <input type="text" class="form-control" id="editore_id" name=editore_id value="{{$libro->editore_id}}" required>
+            <select class="form-control" id="editore_id" name="editore_id" required>
+                @foreach($editori as $editore)
+                    <option value="{{$editore->id}}" {{$libro->editore_id == $editore->id ? 'selected' : ''}}>{{$editore->denominazione}}</option>
+                @endforeach
+            </select>
+            {{-- <input type="text" class="form-control" id="editore_id" name=editore_id value="{{$libro->editore_id}}" required> --}}
             @error('editore_id')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
@@ -58,6 +68,15 @@
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+        <div class="form-group">
+            <label for="categorias" class="form-label">Categorie</label><br>
+            @foreach($categorie as $categoria)
+                <input type="checkbox" id="categoria_{{$categoria->id}}" name="category[]" value="{{$categoria->id}}" {{$libro->category->contains($categoria->id) ? 'checked' : '' }}>
+                <label for="categoria_{{$categoria->id}}"> {{ $categoria->nome }} </label>
+            @endforeach
+        </div> <br>
+
+
         <button type="submit" class="btn btn-primary">Modifica</button>
       </form>
 </div>
